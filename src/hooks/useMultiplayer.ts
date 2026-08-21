@@ -309,10 +309,7 @@ export function useMultiplayer() {
 
   const moveCard = useCallback(
     (cardId: string, target: DropTarget) => {
-      const activeState = serverState || localState;
-      if (role === 'spectator') return;
-      if (role === 'p1' && activeState.hand2.some((c) => c.id === cardId)) return;
-      if (role === 'p2' && activeState.hand1.some((c) => c.id === cardId)) return;
+      if (!cardId || !target) return;
 
       if (role !== 'local') {
         sendAction('MOVE_CARD', { cardId, target });
@@ -386,10 +383,7 @@ export function useMultiplayer() {
 
   const flipCard = useCallback(
     (cardId: string) => {
-      const activeState = serverState || localState;
-      if (role === 'spectator') return;
-      if (role === 'p1' && activeState.hand2.some((c) => c.id === cardId)) return;
-      if (role === 'p2' && activeState.hand1.some((c) => c.id === cardId)) return;
+      if (!cardId) return;
 
       if (role !== 'local') {
         sendAction('FLIP_CARD', { cardId });

@@ -19,6 +19,7 @@ interface DeckAreaProps {
   deck: GameCard[];
   tacticsDeck: GameCard[];
   discardPile: GameCard[];
+  selectedCardId?: string | null;
   onDrawCard: (count?: number) => void;
   onDrawTacticsCard: (count?: number) => void;
   onShuffleDeck: () => void;
@@ -35,6 +36,7 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
   deck,
   tacticsDeck,
   discardPile,
+  selectedCardId,
   onDrawCard,
   onDrawTacticsCard,
   onShuffleDeck,
@@ -89,11 +91,15 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
               onDropToDeck(e);
             }}
             onClick={() => {
-              if (deck.length > 0) onDrawCard(1);
+              if (selectedCardId) {
+                onDropToDeck();
+              } else if (deck.length > 0) {
+                onDrawCard(1);
+              }
             }}
-            title={deck.length > 0 ? 'Birlik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
+            title={selectedCardId ? 'Seçili Kartı Birlik Destesine Koy' : deck.length > 0 ? 'Birlik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
             className={`relative w-18 h-24 sm:w-20 sm:h-28 rounded-[3px] cursor-pointer select-none transition-all duration-200 group flex items-center justify-center my-1 ${
-              isDragOverDeck
+              isDragOverDeck || selectedCardId
                 ? 'border-2 border-[#00FF41] scale-105'
                 : 'hover:-translate-y-1'
             }`}
@@ -169,11 +175,15 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
               onDropToTacticsDeck(e);
             }}
             onClick={() => {
-              if (tacticsDeck.length > 0) onDrawTacticsCard(1);
+              if (selectedCardId) {
+                onDropToTacticsDeck();
+              } else if (tacticsDeck.length > 0) {
+                onDrawTacticsCard(1);
+              }
             }}
-            title={tacticsDeck.length > 0 ? 'Taktik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
+            title={selectedCardId ? 'Seçili Kartı Taktik Destesine Koy' : tacticsDeck.length > 0 ? 'Taktik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
             className={`relative w-18 h-24 sm:w-20 sm:h-28 rounded-[3px] cursor-pointer select-none transition-all duration-200 group flex items-center justify-center my-1 ${
-              isDragOverTacticsDeck
+              isDragOverTacticsDeck || selectedCardId
                 ? 'border-2 border-purple-400 scale-105 shadow-[0_0_12px_rgba(168,85,247,0.5)]'
                 : 'hover:-translate-y-1'
             }`}
@@ -255,7 +265,15 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
             setIsDragOverDiscard(false);
             onDropToDiscard(e);
           }}
+          onClick={() => {
+            if (selectedCardId) {
+              onDropToDiscard();
+            }
+          }}
+          title={selectedCardId ? 'Seçili Kartı Iskartaya At' : 'Kartı Iskartaya Sürükleyin'}
           className={`h-22 rounded-[2px] border border-dashed flex items-center justify-center p-1.5 transition-all ${
+            selectedCardId ? 'cursor-pointer hover:border-rose-400 hover:bg-rose-950/20' : ''
+          } ${
             isDragOverDiscard
               ? 'bg-[#2A1111] border-rose-500'
               : 'border-[#262626] bg-[#121212]/60 hover:border-[#444]'

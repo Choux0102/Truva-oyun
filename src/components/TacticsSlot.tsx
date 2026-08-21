@@ -13,6 +13,7 @@ interface TacticsSlotProps {
   onSelectCard: (card: GameCard) => void;
   onFlipCard: (cardId: string) => void;
   onReturnCardToHand: (cardId: string) => void;
+  onReturnToDeck?: (cardId: string) => void;
   onDiscardCard: (cardId: string) => void;
   onDragStartCard: (
     card: GameCard,
@@ -32,6 +33,7 @@ export const TacticsSlot: React.FC<TacticsSlotProps> = ({
   onSelectCard,
   onFlipCard,
   onReturnCardToHand,
+  onReturnToDeck,
   onDiscardCard,
   onDragStartCard,
   onDragEndCard,
@@ -129,6 +131,7 @@ export const TacticsSlot: React.FC<TacticsSlotProps> = ({
                   onSelect={() => onSelectCard(card)}
                   onFlip={() => onFlipCard(card.id)}
                   onReturnToHand={() => onReturnCardToHand(card.id)}
+                  onReturnToDeck={onReturnToDeck ? () => onReturnToDeck(card.id) : undefined}
                   onDiscard={() => onDiscardCard(card.id)}
                   onDragStart={(evt) => onDragStartCard(card, { type: slotType }, evt)}
                   onDragEnd={onDragEndCard}

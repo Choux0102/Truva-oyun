@@ -226,9 +226,13 @@ export const CardView: React.FC<CardViewProps> = ({
           )}
         </div>
 
-        {/* Floating Hover Controls */}
+        {/* Floating Hover & Selection Controls */}
         {showQuickActions && (
-          <div className="absolute top-0.5 right-0.5 hidden group-hover:flex items-center gap-0.5 bg-[#141414]/95 text-[#EDEDED] p-0.5 rounded-[3px] shadow-[0_4px_16px_rgba(0,0,0,0.9)] border border-[#555] z-50 transition-all pointer-events-auto">
+          <div
+            className={`absolute top-0.5 right-0.5 ${
+              isSelected ? 'flex' : 'hidden group-hover:flex'
+            } items-center gap-0.5 bg-[#141414]/95 text-[#EDEDED] p-0.5 rounded-[3px] shadow-[0_4px_16px_rgba(0,0,0,0.9)] border border-[#555] z-50 transition-all pointer-events-auto`}
+          >
             {onFlip && (
               <button
                 type="button"
@@ -326,9 +330,13 @@ export const CardView: React.FC<CardViewProps> = ({
         <span className="font-bold text-sm sm:text-base tracking-tight">{card.value}</span>
       </div>
 
-      {/* Floating Hover Controls */}
+      {/* Floating Hover & Selection Controls */}
       {showQuickActions && (
-        <div className="absolute top-0.5 right-0.5 hidden group-hover:flex items-center gap-0.5 bg-[#141414]/95 text-[#EDEDED] p-0.5 rounded-[3px] shadow-[0_4px_16px_rgba(0,0,0,0.9)] border border-[#555] z-50 transition-all pointer-events-auto">
+        <div
+          className={`absolute top-0.5 right-0.5 ${
+            isSelected ? 'flex' : 'hidden group-hover:flex'
+          } items-center gap-0.5 bg-[#141414]/95 text-[#EDEDED] p-0.5 rounded-[3px] shadow-[0_4px_16px_rgba(0,0,0,0.9)] border border-[#555] z-50 transition-all pointer-events-auto`}
+        >
           {onFlip && (
             <button
               type="button"

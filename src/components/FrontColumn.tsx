@@ -17,6 +17,7 @@ interface FrontColumnProps {
   onSelectCard: (card: GameCard) => void;
   onFlipCard: (cardId: string) => void;
   onReturnCardToHand: (cardId: string, handTarget?: 1 | 2) => void;
+  onReturnToDeck?: (cardId: string) => void;
   onDiscardCard: (cardId: string) => void;
   onToggleClaim?: (frontIndex: number) => void;
   onClaim?: (frontIndex: number, player: 'top' | 'bottom') => void;
@@ -39,6 +40,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
   onSelectCard,
   onFlipCard,
   onReturnCardToHand,
+  onReturnToDeck,
   onDiscardCard,
   onToggleClaim,
   onClaim,
@@ -166,7 +168,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             : 'bg-[#141414]/50 border border-dashed border-[#262626] hover:border-[#444]'
         } ${selectedCardId ? 'cursor-pointer hover:border-[#666]' : ''}`}
       >
-        <div className="w-full flex justify-between items-center text-[8px] font-mono text-[#555] mb-1 select-none px-0.5">
+        <div className="w-full flex justify-between items-center text-[8px] font-mono text-[#555] mb-1 select-none px-0.5 pointer-events-none">
           <span>TOP</span>
           <span>{topCards.length > 0 ? `[${topCards.length}${hasBataklik ? '/4' : '/3'}]` : ''}</span>
         </div>
@@ -178,7 +180,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center -space-y-[88px] sm:-space-y-[90px] w-full py-1 pb-3">
+          <div className="flex flex-col items-center -space-y-[76px] sm:-space-y-[80px] w-full py-1 pb-2">
             {topCards.map((card, cardIdx) => {
               const isHovered = hoveredCardId === card.id;
               return (
@@ -186,16 +188,25 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
                   key={card.id}
                   onMouseEnter={() => setHoveredCardId(card.id)}
                   onMouseLeave={() => setHoveredCardId(null)}
-                  style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : cardIdx + 1 }}
-                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-110 relative drop-shadow-2xl"
+                  style={{ zIndex: selectedCardId === card.id ? 60 : isHovered ? 50 : cardIdx + 1 }}
+                  className="transition-all duration-150 ease-out hover:-translate-y-2 relative shrink-0"
+                  onDragOver={(e) => handleDragOver(e, 'top')}
+                  onDrop={(e) => handleDrop(e, 'top')}
                 >
-                  <CardView
+                    <CardView
                     card={card}
                     size="sm"
                     isSelected={selectedCardId === card.id}
-                    onSelect={() => onSelectCard(card)}
+                    onSelect={() => {
+                      if (selectedCardId && selectedCardId !== card.id) {
+                        handleClickArea('top');
+                      } else {
+                        onSelectCard(card);
+                      }
+                    }}
                     onFlip={() => onFlipCard(card.id)}
                     onReturnToHand={() => onReturnCardToHand(card.id, 2)}
+                    onReturnToDeck={onReturnToDeck ? () => onReturnToDeck(card.id) : undefined}
                     onDiscard={() => onDiscardCard(card.id)}
                     onDragStart={(evt) =>
                       onDragStartCard(card, { type: 'front_top', frontIndex: index }, evt)
@@ -225,13 +236,13 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
         } ${selectedCardId ? 'cursor-pointer hover:bg-purple-950/20' : ''}`}
       >
         {environmentCards.length === 0 ? (
-          <div className="w-full flex items-center justify-center gap-1 text-[7.5px] sm:text-[8px] font-mono text-[#777] select-none py-0.5">
+          <div className="w-full flex items-center justify-center gap-1 text-[7.5px] sm:text-[8px] font-mono text-[#777] select-none py-0.5 pointer-events-none">
             <Sparkles size={10} className="text-purple-400/70" />
             <span>SİS / BATAKLIK YUVASI</span>
           </div>
         ) : (
           <div className="w-full flex flex-col items-center gap-1 py-0.5">
-            <div className="text-[7.5px] font-mono text-purple-300 font-bold tracking-wider flex items-center gap-1">
+            <div className="text-[7.5px] font-mono text-purple-300 font-bold tracking-wider flex items-center gap-1 pointer-events-none">
               <Sparkles size={9} />
               <span>ÇEVRE KARTLARI [{environmentCards.length}]</span>
             </div>
@@ -245,14 +256,23 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
                     onMouseLeave={() => setHoveredCardId(null)}
                     style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : 10 }}
                     className="transition-all duration-150 hover:scale-110 hover:-translate-y-2 relative shrink-0"
+                    onDragOver={(e) => handleDragOver(e, 'env')}
+                    onDrop={(e) => handleDrop(e, 'env')}
                   >
                     <CardView
                       card={card}
                       size="sm"
                       isSelected={selectedCardId === card.id}
-                      onSelect={() => onSelectCard(card)}
+                      onSelect={() => {
+                        if (selectedCardId && selectedCardId !== card.id) {
+                          handleClickArea('env');
+                        } else {
+                          onSelectCard(card);
+                        }
+                      }}
                       onFlip={() => onFlipCard(card.id)}
                       onReturnToHand={() => onReturnCardToHand(card.id)}
+                      onReturnToDeck={onReturnToDeck ? () => onReturnToDeck(card.id) : undefined}
                       onDiscard={() => onDiscardCard(card.id)}
                       onDragStart={(evt) =>
                         onDragStartCard(card, { type: 'front_env', frontIndex: index }, evt)
@@ -338,7 +358,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             : 'bg-[#141414]/50 border border-dashed border-[#262626] hover:border-[#444]'
         } ${selectedCardId ? 'cursor-pointer hover:border-[#666]' : ''}`}
       >
-        <div className="w-full flex justify-between items-center text-[8px] font-mono text-[#555] mb-1 select-none px-0.5">
+        <div className="w-full flex justify-between items-center text-[8px] font-mono text-[#555] mb-1 select-none px-0.5 pointer-events-none">
           <span>BTM</span>
           <span>{bottomCards.length > 0 ? `[${bottomCards.length}${hasBataklik ? '/4' : '/3'}]` : ''}</span>
         </div>
@@ -350,7 +370,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center -space-y-[88px] sm:-space-y-[90px] w-full py-1 pb-3">
+          <div className="flex flex-col items-center -space-y-[76px] sm:-space-y-[80px] w-full py-1 pb-2">
             {bottomCards.map((card, cardIdx) => {
               const isHovered = hoveredCardId === card.id;
               return (
@@ -358,16 +378,25 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
                   key={card.id}
                   onMouseEnter={() => setHoveredCardId(card.id)}
                   onMouseLeave={() => setHoveredCardId(null)}
-                  style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : cardIdx + 1 }}
-                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-110 relative drop-shadow-2xl"
+                  style={{ zIndex: selectedCardId === card.id ? 60 : isHovered ? 50 : cardIdx + 1 }}
+                  className="transition-all duration-150 ease-out hover:-translate-y-2 relative shrink-0"
+                  onDragOver={(e) => handleDragOver(e, 'bottom')}
+                  onDrop={(e) => handleDrop(e, 'bottom')}
                 >
                   <CardView
                     card={card}
                     size="sm"
                     isSelected={selectedCardId === card.id}
-                    onSelect={() => onSelectCard(card)}
+                    onSelect={() => {
+                      if (selectedCardId && selectedCardId !== card.id) {
+                        handleClickArea('bottom');
+                      } else {
+                        onSelectCard(card);
+                      }
+                    }}
                     onFlip={() => onFlipCard(card.id)}
                     onReturnToHand={() => onReturnCardToHand(card.id)}
+                    onReturnToDeck={onReturnToDeck ? () => onReturnToDeck(card.id) : undefined}
                     onDiscard={() => onDiscardCard(card.id)}
                     onDragStart={(evt) =>
                       onDragStartCard(card, { type: 'front_bottom', frontIndex: index }, evt)

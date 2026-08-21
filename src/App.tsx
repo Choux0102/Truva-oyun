@@ -82,20 +82,8 @@ export default function App() {
       })()
     : null;
 
-  // Helper to check if a card belongs to the opponent's unplayed hand or spectator is attempting to move
-  const isOpponentHandCard = (cardId: string) => {
-    if (role === 'spectator') return true;
-    if (role === 'p1' && hand2.some((c) => c.id === cardId)) return true;
-    if (role === 'p2' && hand1.some((c) => c.id === cardId)) return true;
-    return false;
-  };
-
   // Handle global card drag start & end
-  const handleDragStart = (card: GameCard, e?: React.DragEvent) => {
-    if (isOpponentHandCard(card.id)) {
-      if (e) e.preventDefault();
-      return;
-    }
+  const handleDragStart = (card: GameCard) => {
     draggingCardIdRef.current = card.id;
     setActiveDraggingCard(card);
   };
@@ -105,7 +93,7 @@ export default function App() {
     setActiveDraggingCard(null);
   };
 
-  // Robust universal drop handler that extracts card id directly from drag event, ref, or selected state
+  // Universal drop handler that extracts card id directly from drag event, ref, or selected state
   const resolveAndMoveCard = (target: any, e?: React.DragEvent) => {
     const targetCardId =
       (e ? getCardIdFromDragEvent(e) : null) ||
@@ -113,12 +101,6 @@ export default function App() {
       selectedCardId;
 
     if (targetCardId) {
-      if (isOpponentHandCard(targetCardId)) {
-        setSelectedCardId(null);
-        draggingCardIdRef.current = null;
-        setActiveDraggingCard(null);
-        return;
-      }
       moveCard(targetCardId, target);
       setSelectedCardId(null);
       draggingCardIdRef.current = null;
@@ -141,7 +123,7 @@ export default function App() {
     }
   };
 
-  // Check which hand is masked (fog of war)
+  // Check which hand is masked (opponent's hand is hidden in multiplayer)
   const isHand1Masked = role === 'p2' || role === 'spectator';
   const isHand2Masked = role === 'p1' || role === 'spectator';
 
@@ -177,14 +159,14 @@ export default function App() {
               role === 'p2'
                 ? 'PLAYER 02 // SİZİN ELİNİZ (ÜST ALAN)'
                 : isHand2Masked
-                ? 'PLAYER 02 // RAKİP ELİ (ÜST ALAN - GİZLİ)'
+                ? 'PLAYER 02 // RAKİP ELİ (GİZLİ)'
                 : 'PLAYER 02 // ÜST OYUNCU ELİ'
             }
             cards={hand2}
             selectedCardId={selectedCardId}
             isSecondary={true}
             isMasked={isHand2Masked}
-            isCurrentPlayerHand={role === 'p2'}
+            isCurrentPlayerHand={!isHand2Masked}
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
             onReturnToDeck={(cId) => returnToDeck(cId)}
@@ -211,6 +193,7 @@ export default function App() {
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
             onReturnCardToHand={(cId) => returnToHand(cId, 2)}
+            onReturnToDeck={returnToDeck}
             onDiscardCard={discardCard}
             onDragStartCard={handleDragStart}
             onDragEndCard={handleDragEnd}
@@ -301,6 +284,7 @@ export default function App() {
                   onReturnCardToHand={(cId, handTarget) =>
                     returnToHand(cId, handTarget || activeHandIndex)
                   }
+                  onReturnToDeck={returnToDeck}
                   onDiscardCard={discardCard}
                   onToggleClaim={toggleFrontClaim}
                   onClaim={setFrontClaim}
@@ -322,6 +306,7 @@ export default function App() {
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
             onReturnCardToHand={(cId) => returnToHand(cId, 1)}
+            onReturnToDeck={returnToDeck}
             onDiscardCard={discardCard}
             onDragStartCard={handleDragStart}
             onDragEndCard={handleDragEnd}
@@ -333,13 +318,13 @@ export default function App() {
               role === 'p1'
                 ? 'PLAYER 01 // SİZİN ELİNİZ (ALT ALAN)'
                 : isHand1Masked
-                ? 'PLAYER 01 // RAKİP ELİ (ALT ALAN - GİZLİ)'
+                ? 'PLAYER 01 // RAKİP ELİ (GİZLİ)'
                 : 'PLAYER 01 // ALT OYUNCU ELİ'
             }
             cards={hand1}
             selectedCardId={selectedCardId}
             isMasked={isHand1Masked}
-            isCurrentPlayerHand={role === 'p1'}
+            isCurrentPlayerHand={!isHand1Masked}
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
             onReturnToDeck={(cId) => returnToDeck(cId)}
@@ -361,6 +346,7 @@ export default function App() {
           deck={Array(deckCount).fill({} as any)}
           tacticsDeck={Array(tacticsDeckCount).fill({} as any)}
           discardPile={discardPile}
+          selectedCardId={selectedCardId}
           onDrawCard={(count) => drawCard(count || 1, activeHandIndex)}
           onDrawTacticsCard={(count) => drawTacticsCard(count || 1, activeHandIndex)}
           onShuffleDeck={shuffleCurrentDeck}

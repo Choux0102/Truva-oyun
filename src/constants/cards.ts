@@ -63,8 +63,9 @@ export const CARD_SUITS: CardSuit[] = [
   },
 ];
 
-export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
+export const TACTICS_DEFINITIONS: GameCard[] = [
   {
+    id: 'tactic-1-ek-taarruz',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 8,
@@ -78,8 +79,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Ek Taarruz',
     description:
       'Birlik kartı gibi kullanabildiğiniz bu kartı, 8 değerinde olan herhangi bir renkli birlik kartı olarak oynayabilirsiniz. Kartın rengini ise cephe sonuçlanırken belirlersiniz.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-2-savunma-hatti',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -93,8 +96,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Savunma Hattı',
     description:
       'Birlik kartı gibi kullanabildiğiniz bu kartı, 1, 2 ya da 3 değerinde olan herhangi bir renkli birlik kartı olarak oynayabilirsiniz. Kartın değerini ve rengini ise cephe sonuçlanırken belirlersiniz.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-3-lider-achilles',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -108,8 +113,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Lider: Achilles',
     description:
       'Bu kartı istediğiniz herhangi bir değer ve renkteki birlik kartı yerine koyabilirsiniz.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-4-lider-hector',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -123,8 +130,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Lider: Hector',
     description:
       'Bu kartı istediğiniz herhangi bir değer ve renkteki birlik kartı yerine koyabilirsiniz.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-5-bataklik',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -138,8 +147,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Bataklık',
     description:
       'Bu kart oynandığı cephe üzerindeki formasyonu genişletir ve cephenin sonuçlanması için oyuncuların 4 kart koyması gerekir.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-6-sis',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -153,8 +164,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Sis',
     description:
       'Bu kart oynandığı cephe üzerinde bulunan bütün formasyonları ortadan kaldırır. Söz konusu cephede toplam kart değeri en yüksek rakama sahip olan oyuncu, cepheyi kazanır.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-7-gozcu',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -168,8 +181,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Gözcü',
     description:
       'Oyuncu, birlik veya taktik destelerinden toplamda 3 adet kart çeker ve eline ekler. Ardından ise, elinde bulunan kartlardan istemediği 2 tanesini, yüzü kapalı olacak şekilde, ilgili destelerin üzerine yerleştirir.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-8-takviye-birlik',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -183,8 +198,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Takviye Birlik',
     description:
       'Oyuncu, kendi tarafında bulunan sonuçlanmamış bir cephedeki bir birlik ya da taktik kartını alarak, dilediği başka bir cephesine oynayabilir. Ya da seçtiği birlik kartını, yüzü açık şekilde masanın kenarına koyarak, ıskartaya çıkarabilir.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-9-firari',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -198,8 +215,10 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Firari',
     description:
       'Oyuncu, rakibin tarafında bulunan sonuçlanmamış bir cephedeki bir birlik ya da taktik kartını alır ve bu kartı, yüzü açık şekilde ıskartaya çıkarır.',
+    isFaceDown: false,
   },
   {
+    id: 'tactic-10-hain',
     suit: 'tactics',
     suitName: 'Taktik',
     value: 0,
@@ -213,6 +232,7 @@ export const TACTICS_DEFINITIONS: Omit<GameCard, 'id' | 'isFaceDown'>[] = [
     title: 'Hain',
     description:
       'Oyuncu, rakibin tarafında bulunan sonuçlanmamış bir cephedeki bir birlik kartını alarak, kendi tarafındaki bir cepheye oynayabilir.',
+    isFaceDown: false,
   },
 ];
 
@@ -242,9 +262,8 @@ export function createFullDeck(): GameCard[] {
 }
 
 export function createTacticsDeck(): GameCard[] {
-  return TACTICS_DEFINITIONS.map((t, idx) => ({
+  return TACTICS_DEFINITIONS.map((t) => ({
     ...t,
-    id: `tactic-${idx + 1}-${t.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
     isFaceDown: false,
   }));
 }

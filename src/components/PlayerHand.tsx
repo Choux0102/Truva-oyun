@@ -50,8 +50,8 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Hand is only interactable if not masked and belongs to current player
-  const isInteractable = !isMasked && isCurrentPlayerHand;
+  // Hand is fully interactable
+  const isInteractable = !isMasked;
 
   const handleDragOver = (e: React.DragEvent) => {
     if (!isInteractable) return;
@@ -247,7 +247,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
             )}
           </div>
         ) : (
-          <div className="flex items-center min-w-max -space-x-3 sm:-space-x-4 hover:space-x-2 transition-all duration-200 px-3">
+          <div className="flex items-center min-w-max gap-2 sm:gap-2.5 px-3 py-2">
             {cards.map((card, idx) => {
               const isHovered = hoveredCardId === card.id;
               // If hand is not interactable/masked, force face down & disable all actions
@@ -258,9 +258,9 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
                   key={card.id}
                   onMouseEnter={() => (isInteractable ? setHoveredCardId(card.id) : null)}
                   onMouseLeave={() => (isInteractable ? setHoveredCardId(null) : null)}
-                  style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : idx + 1 }}
-                  className={`transition-all duration-150 ease-out relative drop-shadow-2xl shrink-0 ${
-                    isInteractable ? 'hover:-translate-y-5 hover:scale-110' : 'cursor-not-allowed opacity-90'
+                  style={{ zIndex: selectedCardId === card.id ? 60 : isHovered ? 50 : idx + 1 }}
+                  className={`transition-all duration-150 ease-out relative shrink-0 ${
+                    isInteractable ? 'hover:-translate-y-2' : 'cursor-not-allowed opacity-90'
                   }`}
                 >
                   <CardView

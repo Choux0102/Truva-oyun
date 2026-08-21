@@ -86,6 +86,46 @@ export const RoomControls: React.FC<RoomControlsProps> = ({
             <span>{getRoleLabel(role)}</span>
           </div>
 
+          {/* Quick Role Switch Buttons */}
+          <div className="flex items-center gap-1 bg-[#090d14] p-0.5 rounded-[2px] border border-[#1f2a3c]">
+            <button
+              type="button"
+              onClick={() => onChangeRoom(roomId, 'local', playerName)}
+              title="Yerel Masa Modu (Her İki El Açık & Yönetilebilir)"
+              className={`px-1.5 py-0.5 text-[10px] rounded-[1px] transition-colors ${
+                role === 'local'
+                  ? 'bg-zinc-700 text-white font-bold'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+              }`}
+            >
+              Masa
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeRoom(roomId, 'p1', playerName)}
+              title="P1 (Alt Oyuncu) Olarak Oyna"
+              className={`px-1.5 py-0.5 text-[10px] rounded-[1px] transition-colors ${
+                role === 'p1'
+                  ? 'bg-emerald-700 text-white font-bold'
+                  : 'text-zinc-400 hover:text-emerald-300 hover:bg-zinc-800'
+              }`}
+            >
+              P1
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeRoom(roomId, 'p2', playerName)}
+              title="P2 (Üst Oyuncu) Olarak Oyna"
+              className={`px-1.5 py-0.5 text-[10px] rounded-[1px] transition-colors ${
+                role === 'p2'
+                  ? 'bg-cyan-700 text-white font-bold'
+                  : 'text-zinc-400 hover:text-cyan-300 hover:bg-zinc-800'
+              }`}
+            >
+              P2
+            </button>
+          </div>
+
           {/* Connection & Presence Status */}
           {role !== 'local' ? (
             <div className="flex items-center gap-2">

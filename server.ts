@@ -53,12 +53,12 @@ interface RoomState {
 
 // Helpers to create initial decks
 const SUITS = [
-  { id: 'suit1', name: 'Kırmızı Süvari', symbol: '⚔️', colorName: 'Kırmızı', badgeBg: '#450a0a', badgeText: '#f87171', accentColor: '#ef4444', borderAccent: '#b91c1c' },
-  { id: 'suit2', name: 'Mavi Okçu', symbol: '🏹', colorName: 'Mavi', badgeBg: '#082f49', badgeText: '#38bdf8', accentColor: '#0ea5e9', borderAccent: '#0369a1' },
-  { id: 'suit3', name: 'Yeşil Mızraklı', symbol: '🌲', colorName: 'Yeşil', badgeBg: '#052e16', badgeText: '#4ade80', accentColor: '#22c55e', borderAccent: '#15803d' },
-  { id: 'suit4', name: 'Sarı Muhafız', symbol: '🛡️', colorName: 'Sarı', badgeBg: '#422006', badgeText: '#facc15', accentColor: '#eab308', borderAccent: '#a16207' },
-  { id: 'suit5', name: 'Mor Büyücü', symbol: '🔮', colorName: 'Mor', badgeBg: '#3b0764', badgeText: '#c084fc', accentColor: '#a855f7', borderAccent: '#7e22ce' },
-  { id: 'suit6', name: 'Turuncu Savaşçı', symbol: '⚡', colorName: 'Turuncu', badgeBg: '#431407', badgeText: '#fb923c', accentColor: '#f97316', borderAccent: '#c2410c' },
+  { id: 'suit1', name: 'Turuncu', symbol: '◆', colorName: 'Turuncu', badgeBg: 'bg-orange-500/20 text-orange-400 border-orange-500/40', badgeText: 'text-orange-400', accentColor: '#F97316', borderAccent: 'border-orange-500/40' },
+  { id: 'suit2', name: 'Kırmızı', symbol: '▲', colorName: 'Kırmızı', badgeBg: 'bg-red-500/20 text-red-400 border-red-500/40', badgeText: 'text-red-400', accentColor: '#EF4444', borderAccent: 'border-red-500/40' },
+  { id: 'suit3', name: 'Turkuaz', symbol: '⬢', colorName: 'Turkuaz', badgeBg: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40', badgeText: 'text-cyan-400', accentColor: '#06B6D4', borderAccent: 'border-cyan-500/40' },
+  { id: 'suit4', name: 'Kahverengi', symbol: '★', colorName: 'Kahverengi', badgeBg: 'bg-amber-900/30 text-amber-300 border-amber-800/50', badgeText: 'text-amber-400', accentColor: '#92400E', borderAccent: 'border-amber-700/40' },
+  { id: 'suit5', name: 'Gri', symbol: '◈', colorName: 'Gri', badgeBg: 'bg-slate-500/20 text-slate-300 border-slate-500/40', badgeText: 'text-slate-300', accentColor: '#94A3B8', borderAccent: 'border-slate-500/40' },
+  { id: 'suit6', name: 'Sarı', symbol: '●', colorName: 'Sarı', badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40', badgeText: 'text-yellow-400', accentColor: '#EAB308', borderAccent: 'border-yellow-500/40' },
 ];
 
 const TACTICS_DEFINITIONS = [
@@ -265,15 +265,12 @@ function getSanitizedRoomState(room: RoomState, role: 'p1' | 'p2' | 'spectator')
   const p1Active = room.p1Online || now - room.p1LastPing < 10000;
   const p2Active = room.p2Online || now - room.p2LastPing < 10000;
 
-  const hand1Sanitized = role === 'p1' ? room.hand1 : room.hand1.map(getSanitizedCard);
-  const hand2Sanitized = role === 'p2' ? room.hand2 : room.hand2.map(getSanitizedCard);
-
   return {
     id: room.id,
     deckCount: room.deck.length,
     tacticsDeckCount: room.tacticsDeck.length,
-    hand1: hand1Sanitized,
-    hand2: hand2Sanitized,
+    hand1: room.hand1,
+    hand2: room.hand2,
     hand1Count: room.hand1.length,
     hand2Count: room.hand2.length,
     fronts: room.fronts,
@@ -317,10 +314,7 @@ function handleExecuteAction(room: RoomState, role: 'p1' | 'p2' | 'spectator', a
     }
   } else if (action === "MOVE_CARD") {
     const { cardId, target } = payload;
-    if (role === 'spectator') return;
-    // Security check: Players cannot move/drag unplayed cards from opponent's hand
-    if (role === 'p1' && room.hand2.some((c) => c.id === cardId)) return;
-    if (role === 'p2' && room.hand1.some((c) => c.id === cardId)) return;
+    if (!cardId || !target) return;
 
     let cardToMove: GameCard | null = null;
 
@@ -423,9 +417,7 @@ function handleExecuteAction(room: RoomState, role: 'p1' | 'p2' | 'spectator', a
     handleExecuteAction(room, role, "MOVE_CARD", { cardId, target: { type: 'deck' } });
   } else if (action === "FLIP_CARD") {
     const { cardId } = payload;
-    if (role === 'spectator') return;
-    if (role === 'p1' && room.hand2.some((c) => c.id === cardId)) return;
-    if (role === 'p2' && room.hand1.some((c) => c.id === cardId)) return;
+    if (!cardId) return;
 
     const updateCard = (c: GameCard) => (c.id === cardId ? { ...c, isFaceDown: !c.isFaceDown } : c);
 
