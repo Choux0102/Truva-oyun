@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameCard } from '../types';
-import { Eye, EyeOff, RotateCcw, Trash2 } from 'lucide-react';
+import { Eye, EyeOff, RotateCcw, Trash2, ArrowUpToLine } from 'lucide-react';
 
 interface CardViewProps {
   card: GameCard;
@@ -10,6 +10,7 @@ interface CardViewProps {
   onSelect?: () => void;
   onFlip?: () => void;
   onReturnToHand?: () => void;
+  onReturnToDeck?: () => void;
   onDiscard?: () => void;
   onDragStart?: (e: React.DragEvent) => void;
   onDragEnd?: (e: React.DragEvent) => void;
@@ -25,6 +26,7 @@ export const CardView: React.FC<CardViewProps> = ({
   onSelect,
   onFlip,
   onReturnToHand,
+  onReturnToDeck,
   onDiscard,
   onDragStart,
   onDragEnd,
@@ -255,6 +257,20 @@ export const CardView: React.FC<CardViewProps> = ({
                 <RotateCcw size={11} />
               </button>
             )}
+            {onReturnToDeck && (
+              <button
+                type="button"
+                id={`return-deck-${card.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReturnToDeck();
+                }}
+                title="Destenin En Üstüne Geri Koy"
+                className="p-1 hover:bg-[#1E293B] text-cyan-300 rounded-[2px] transition-colors"
+              >
+                <ArrowUpToLine size={11} />
+              </button>
+            )}
             {onDiscard && (
               <button
                 type="button"
@@ -339,6 +355,20 @@ export const CardView: React.FC<CardViewProps> = ({
               className="p-1 hover:bg-[#2A2A2A] rounded-[2px] transition-colors"
             >
               <RotateCcw size={11} />
+            </button>
+          )}
+          {onReturnToDeck && (
+            <button
+              type="button"
+              id={`return-deck-${card.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onReturnToDeck();
+              }}
+              title="Destenin En Üstüne Geri Koy"
+              className="p-1 hover:bg-[#1E293B] text-cyan-300 rounded-[2px] transition-colors"
+            >
+              <ArrowUpToLine size={11} />
             </button>
           )}
           {onDiscard && (

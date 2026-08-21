@@ -7,7 +7,7 @@ import { DeckArea } from './components/DeckArea';
 import { TableControls, TableTheme } from './components/TableControls';
 import { RoomControls } from './components/RoomControls';
 import { GameCard, getCardIdFromDragEvent } from './types';
-import { X, Eye, Trash2, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Eye, Trash2, RotateCcw, ChevronLeft, ChevronRight, ArrowUpToLine } from 'lucide-react';
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -39,6 +39,7 @@ export default function App() {
     moveCard,
     flipCard,
     returnToHand,
+    returnToDeck,
     discardCard,
     shuffleCurrentDeck,
     shuffleTacticsDeck,
@@ -186,6 +187,7 @@ export default function App() {
             isCurrentPlayerHand={role === 'p2'}
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
+            onReturnToDeck={(cId) => returnToDeck(cId)}
             onDiscardCard={discardCard}
             onDropToHand={(e) => resolveAndMoveCard({ type: 'hand', handIndex: 2 }, e)}
             onDragStartCard={handleDragStart}
@@ -340,6 +342,7 @@ export default function App() {
             isCurrentPlayerHand={role === 'p1'}
             onSelectCard={(c) => setSelectedCardId(selectedCardId === c.id ? null : c.id)}
             onFlipCard={flipCard}
+            onReturnToDeck={(cId) => returnToDeck(cId)}
             onDiscardCard={discardCard}
             onDropToHand={(e) => resolveAndMoveCard({ type: 'hand', handIndex: 1 }, e)}
             onDragStartCard={handleDragStart}
@@ -437,6 +440,20 @@ export default function App() {
             >
               <RotateCcw size={11} />
               <span>Ele Al</span>
+            </button>
+
+            <button
+              type="button"
+              id="bar-deck-btn"
+              onClick={() => {
+                returnToDeck(selectedCard.id);
+                setSelectedCardId(null);
+              }}
+              className="p-1 px-2 hover:bg-[#1E293B] text-cyan-300 rounded-[2px] text-[10px] flex items-center gap-1 uppercase tracking-wider border border-cyan-800/40"
+              title="Destenin En Üstüne Geri Koy"
+            >
+              <ArrowUpToLine size={11} />
+              <span>Desteye Koy</span>
             </button>
 
             <button

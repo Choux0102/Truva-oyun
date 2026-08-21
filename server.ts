@@ -411,12 +411,16 @@ function handleExecuteAction(room: RoomState, role: 'p1' | 'p2' | 'spectator', a
       } else if (target.type === 'deck' || target.type === 'tactics_deck') {
         if (cardToMove.cardType === 'tactics' || cardToMove.suit === 'tactics') {
           room.tacticsDeck.unshift(cardToMove);
+          room.lastAction = `1 taktik kartı destenin en üstüne kondu`;
         } else {
           room.deck.unshift(cardToMove);
+          room.lastAction = `1 birlik kartı destenin en üstüne kondu`;
         }
-        room.lastAction = `1 kart desteye iade edildi`;
       }
     }
+  } else if (action === "RETURN_TO_DECK") {
+    const { cardId } = payload;
+    handleExecuteAction(room, role, "MOVE_CARD", { cardId, target: { type: 'deck' } });
   } else if (action === "FLIP_CARD") {
     const { cardId } = payload;
     if (role === 'spectator') return;

@@ -470,6 +470,13 @@ export function useMultiplayer() {
     [moveCard]
   );
 
+  const returnToDeck = useCallback(
+    (cardId: string) => {
+      moveCard(cardId, { type: 'deck' });
+    },
+    [moveCard]
+  );
+
   const resetGame = useCallback(() => {
     if (role !== 'local') {
       sendAction('RESET_GAME');
@@ -587,6 +594,7 @@ export function useMultiplayer() {
     moveCard,
     flipCard,
     returnToHand,
+    returnToDeck,
     discardCard,
     resetGame,
     shuffleCurrentDeck,

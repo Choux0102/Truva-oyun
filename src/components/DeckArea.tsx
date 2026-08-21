@@ -91,7 +91,7 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
             onClick={() => {
               if (deck.length > 0) onDrawCard(1);
             }}
-            title={deck.length > 0 ? 'Birlik Kartı Çek' : 'Birlik Destesi Boş'}
+            title={deck.length > 0 ? 'Birlik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
             className={`relative w-18 h-24 sm:w-20 sm:h-28 rounded-[3px] cursor-pointer select-none transition-all duration-200 group flex items-center justify-center my-1 ${
               isDragOverDeck
                 ? 'border-2 border-[#00FF41] scale-105'
@@ -171,7 +171,7 @@ export const DeckArea: React.FC<DeckAreaProps> = ({
             onClick={() => {
               if (tacticsDeck.length > 0) onDrawTacticsCard(1);
             }}
-            title={tacticsDeck.length > 0 ? 'Taktik Kartı Çek' : 'Taktik Destesi Boş'}
+            title={tacticsDeck.length > 0 ? 'Taktik Kartı Çek / Kartı Destenin En Üstüne Bırak' : 'Kartı Destenin En Üstüne Bırak'}
             className={`relative w-18 h-24 sm:w-20 sm:h-28 rounded-[3px] cursor-pointer select-none transition-all duration-200 group flex items-center justify-center my-1 ${
               isDragOverTacticsDeck
                 ? 'border-2 border-purple-400 scale-105 shadow-[0_0_12px_rgba(168,85,247,0.5)]'

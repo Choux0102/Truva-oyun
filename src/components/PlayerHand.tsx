@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { GameCard } from '../types';
 import { CardView } from './CardView';
-import { ArrowDownUp, Layers, Plus, ChevronLeft, ChevronRight, Lock, UserCheck } from 'lucide-react';
+import { ArrowDownUp, Layers, Plus, ChevronLeft, ChevronRight, Lock, UserCheck, ArrowUpToLine } from 'lucide-react';
 
 interface PlayerHandProps {
   label?: string;
@@ -9,6 +9,7 @@ interface PlayerHandProps {
   selectedCardId: string | null;
   onSelectCard: (card: GameCard) => void;
   onFlipCard: (cardId: string) => void;
+  onReturnToDeck?: (cardId: string) => void;
   onDiscardCard: (cardId: string) => void;
   onDropToHand: (e?: React.DragEvent) => void;
   onDragStartCard: (card: GameCard, e?: React.DragEvent) => void;
@@ -30,6 +31,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
   selectedCardId,
   onSelectCard,
   onFlipCard,
+  onReturnToDeck,
   onDiscardCard,
   onDropToHand,
   onDragStartCard,
@@ -153,6 +155,19 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
             </div>
           )}
 
+          {isInteractable && onReturnToDeck && selectedCardId && cards.some((c) => c.id === selectedCardId) && (
+            <button
+              type="button"
+              id={`return-to-deck-btn-${isSecondary ? '2' : '1'}`}
+              onClick={() => onReturnToDeck(selectedCardId)}
+              title="Seçili Kartı Destenin En Üstüne Geri Koy"
+              className="text-[10px] font-mono px-2 py-1 rounded-[2px] border border-cyan-500/60 bg-cyan-950/70 text-cyan-300 hover:text-white hover:bg-cyan-900/70 transition-colors flex items-center gap-1 uppercase tracking-wider shadow-sm animate-pulse"
+            >
+              <ArrowUpToLine size={11} />
+              <span>Desteye Koy</span>
+            </button>
+          )}
+
           {isInteractable && onSortHandByValue && (
             <button
               type="button"
@@ -254,6 +269,7 @@ export const PlayerHand: React.FC<PlayerHandProps> = ({
                     isSelected={isInteractable && selectedCardId === card.id}
                     onSelect={isInteractable ? () => onSelectCard(card) : undefined}
                     onFlip={isInteractable ? () => onFlipCard(card.id) : undefined}
+                    onReturnToDeck={isInteractable && onReturnToDeck ? () => onReturnToDeck(card.id) : undefined}
                     onDiscard={isInteractable ? () => onDiscardCard(card.id) : undefined}
                     onDragStart={isInteractable ? (evt) => onDragStartCard(card, evt) : undefined}
                     onDragEnd={isInteractable ? onDragEndCard : undefined}
