@@ -1,0 +1,6 @@
+{
+  "name": "Kuralsız Oyun Masası",
+  "description": "9 cepheli, 60 birlik kartı ve 10 taktik kartı içeren, gerçek zamanlı çok oyunculu (P1 vs P2) ve gizli el korumalı (Fog of War) masa oyunu platformu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

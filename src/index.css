@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Realistic Game Table Mats & Wood / Felt Surface Styles */
+.tabletop-surface {
+  background-color: #0c0e12;
+  background-image: 
+    radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.45) 0%, rgba(12, 14, 18, 0.95) 75%),
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    repeating-linear-gradient(45deg, rgba(20, 26, 35, 0.4) 0px, rgba(20, 26, 35, 0.4) 2px, transparent 2px, transparent 8px),
+    linear-gradient(to bottom, #090c10 0%, #0d1219 50%, #080a0e 100%);
+  background-size: 100% 100%, 24px 24px, 16px 16px, 100% 100%;
+}
+
+.tabletop-wood {
+  background-color: #1a120c;
+  background-image: 
+    radial-gradient(circle at 50% 25%, rgba(68, 42, 24, 0.4) 0%, rgba(20, 13, 8, 0.95) 80%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.25) 0px, rgba(0, 0, 0, 0.25) 2px, transparent 2px, transparent 8px),
+    linear-gradient(135deg, #1f140d 0%, #291a10 50%, #150d07 100%);
+}
+
+.tabletop-felt {
+  background-color: #071912;
+  background-image: 
+    radial-gradient(circle at 50% 35%, rgba(16, 60, 42, 0.5) 0%, rgba(5, 18, 13, 0.95) 75%),
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    repeating-linear-gradient(45deg, rgba(10, 40, 28, 0.3) 0px, rgba(10, 40, 28, 0.3) 2px, transparent 2px, transparent 6px),
+    linear-gradient(to bottom, #05140d 0%, #0a2419 50%, #04100b 100%);
+  background-size: 100% 100%, 18px 18px, 12px 12px, 100% 100%;
+}
+
+.tabletop-leather {
+  background-color: #121016;
+  background-image: 
+    radial-gradient(circle at 50% 30%, rgba(45, 32, 60, 0.45) 0%, rgba(14, 11, 19, 0.95) 75%),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    repeating-linear-gradient(60deg, rgba(30, 20, 42, 0.3) 0px, rgba(30, 20, 42, 0.3) 2px, transparent 2px, transparent 8px),
+    linear-gradient(to bottom, #0d0a13 0%, #181324 50%, #09070d 100%);
+  background-size: 100% 100%, 20px 20px, 14px 14px, 100% 100%;
+}
