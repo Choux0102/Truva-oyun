@@ -178,7 +178,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center -space-y-10 sm:-space-y-12 w-full py-1 pb-3">
+          <div className="flex flex-col items-center -space-y-[88px] sm:-space-y-[90px] w-full py-1 pb-3">
             {topCards.map((card, cardIdx) => {
               const isHovered = hoveredCardId === card.id;
               return (
@@ -187,7 +187,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
                   onMouseEnter={() => setHoveredCardId(card.id)}
                   onMouseLeave={() => setHoveredCardId(null)}
                   style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : cardIdx + 1 }}
-                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-115 relative drop-shadow-2xl"
+                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-110 relative drop-shadow-2xl"
                 >
                   <CardView
                     card={card}
@@ -350,7 +350,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center -space-y-10 sm:-space-y-12 w-full py-1 pb-3">
+          <div className="flex flex-col items-center -space-y-[88px] sm:-space-y-[90px] w-full py-1 pb-3">
             {bottomCards.map((card, cardIdx) => {
               const isHovered = hoveredCardId === card.id;
               return (
@@ -359,7 +359,7 @@ export const FrontColumn: React.FC<FrontColumnProps> = ({
                   onMouseEnter={() => setHoveredCardId(card.id)}
                   onMouseLeave={() => setHoveredCardId(null)}
                   style={{ zIndex: isHovered ? 999 : selectedCardId === card.id ? 100 : cardIdx + 1 }}
-                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-115 relative drop-shadow-2xl"
+                  className="transition-all duration-150 ease-out hover:-translate-y-4 hover:scale-110 relative drop-shadow-2xl"
                 >
                   <CardView
                     card={card}

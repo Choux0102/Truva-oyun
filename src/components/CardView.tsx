@@ -289,7 +289,7 @@ export const CardView: React.FC<CardViewProps> = ({
     >
       {/* Top Header Row: Value & Symbol */}
       <div className="flex justify-between items-start w-full font-mono leading-none">
-        <span className="font-bold text-sm sm:text-base tracking-tight">{card.value}</span>
+        <span className="font-black text-sm sm:text-base tracking-tight">{card.value}</span>
         <span className={`text-xs font-bold ${currentSuit.symbolColor}`}>
           {card.symbol}
         </span>
